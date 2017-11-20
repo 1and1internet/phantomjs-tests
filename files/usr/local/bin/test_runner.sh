@@ -3,7 +3,7 @@
 function install_requirements
 {
     if [ -f /tmp/tests/requirements.txt ]; then
-        pip install -r /tmp/tests/requirements.txt
+        pip3 install -r /tmp/tests/requirements.txt
     fi
 }
 
