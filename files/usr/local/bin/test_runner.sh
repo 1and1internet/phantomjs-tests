@@ -26,6 +26,7 @@ wait_for_selenium_server
     ln -sf /shared_storage/build-${CI_BUILD_NUMBER}-${CI_REPO/\//-}/simple_service_information.json /shared_storage/
 
 run-parts --exit-on-error --regex "(^[a-zA-Z0-9]+).py" /tmp/tests/selenium-tests/
-
+exitval=$?
 # kill supervisord
 kill 1
+exit $exitval
