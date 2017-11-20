@@ -29,7 +29,7 @@ run-parts --exit-on-error --regex "(^[a-zA-Z0-9_]+).py" /tmp/tests/selenium-test
 exitval=$?
 
 # kill supervisord after we exit, giving supervisord time to catch our exit
-(sleep 3 && kill 1)&
+(sleep 1 && kill 1)&
 
 echo "Test runner exiting with $exitval"
 exit $exitval
