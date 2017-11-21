@@ -25,7 +25,7 @@ wait_for_selenium_server
 [ -f /shared_storage/simple_service_information.json ] || \
     ln -sf /shared_storage/build-${CI_BUILD_NUMBER}-${CI_REPO/\//-}/simple_service_information.json /shared_storage/
 
-run-parts --exit-on-error --regex "(^[a-zA-Z0-9_.]+)" /tmp/tests/selenium-tests/
+run-parts --exit-on-error --regex "(^[a-zA-Z0-9_.]+)" /tmp/tests/scripts/
 exitval=$?
 
 # kill supervisord after we exit, giving supervisord time to catch our exit
