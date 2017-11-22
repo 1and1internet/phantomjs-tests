@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+
+function install_requirements
+{
+    REQS=${PWD}/testpack/requirements.txt
+    if [ -f ${REQS} ]; then
+        pip3 install -r ${REQS}
+    fi
+}
+
+install_requirements
+
+[ ! -z ${SCREENSHOTS} ] && mkdir -p ${SCREENSHOTS}
+
+run-parts --exit-on-error --regex "(^[a-zA-Z0-9_.]+)" ${PWD}/testpack/scripts/
+exitval=$?
+
+# kill supervisord after we exit, giving supervisord time to catch our exit
+(sleep 1 && kill 1)&
+
+echo "Test runner exiting with $exitval"
+exit $exitval

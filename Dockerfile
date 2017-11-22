@@ -1,33 +1,25 @@
-FROM golang as supervisorgo
-MAINTAINER brian.wilkinson@1and1.co.uk
-WORKDIR /go/src/github.com/1and1internet/supervisorgo
-RUN git clone https://github.com/1and1internet/supervisorgo.git . \
-	&& go build -o release/supervisorgo \
-	&& echo "supervisorgo successfully built"
+FROM 1and1internet/debian-8:latest
 
-FROM ubuntu:latest
-COPY --from=supervisorgo /go/src/github.com/1and1internet/supervisorgo/release/supervisorgo /usr/bin/supervisorgo
 ARG PHANTOMJS=phantomjs-2.1.1-linux-x86_64
 
-RUN \
-    apt-get update \
-    && apt-get install -y wget tar bzip2 npm default-jre nodejs netcat \
-    build-essential g++ flex bison gperf ruby perl \
-    libsqlite3-dev libfontconfig1-dev libicu-dev libfreetype6 libssl-dev \
-    libpng-dev libjpeg-dev python3 python3-pip libx11-dev libxext-dev \
+# Other potential requirements for phantomjs are...
+#   libsqlite3 libicu libfreetype6 libssl libpng libjpeg libx11 libxext
+# I've only installed libfontconfig1 as that's the minimum requirement and meets our needs
+
+COPY files /
+RUN apt-get update \
+    && apt-get install -y curl tar bzip2 python3 python3-pip libfontconfig1 \
     && cd / \
-    && wget https://bitbucket.org/ariya/phantomjs/downloads/${PHANTOMJS}.tar.bz2 \
-    && tar xvf /${PHANTOMJS}.tar.bz2 \
+    && curl -L https://bitbucket.org/ariya/phantomjs/downloads/${PHANTOMJS}.tar.bz2 | tar jxvf - \
     && cd /${PHANTOMJS} \
-    && ln -s /usr/bin/nodejs /usr/bin/node \
-    && npm install selenium-standalone@latest -g \
-    && selenium-standalone install \
-    && update-alternatives --install /usr/bin/supervisord supervisord /usr/bin/supervisorgo 1
+    && update-alternatives --install /usr/bin/supervisord supervisord /usr/bin/supervisorgo 1 \
+	&& apt-get clean \
+	&& rm -rf /var/lib/apt/lists/* \
+	&& chmod -R 777 /usr/local \
+	&& chmod +x /usr/local/bin/test_runner
 
 ENV PATH=${PATH}:/${PHANTOMJS}/bin \
     TESTS_DIR=/tmp/tests
 
 WORKDIR /mnt
-CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/supervisor.conf"]
-
-COPY files /
+#ENTRYPOINT ["/usr/bin/supervisord", "-c", "/etc/supervisor/supervisord.conf"]
