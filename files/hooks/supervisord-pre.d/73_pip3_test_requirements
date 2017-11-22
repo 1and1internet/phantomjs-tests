@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+REQS=${PWD}/testpack/requirements.txt
+if [ -f ${REQS} ]; then
+    echo "  Attempting to install python modules"
+    pip3 install -r ${REQS}
+else
+    echo "  No python modules to install"
+fi

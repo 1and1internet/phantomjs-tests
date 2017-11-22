@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+if [ ! -z ${SCREENSHOTS} ]; then
+    echo "  Creating screenshots folder: ${SCREENSHOTS}"
+    mkdir -p ${SCREENSHOTS}
+else
+    echo "  No screenshots folder to create"
+fi

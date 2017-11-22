@@ -1,17 +1,5 @@
 #!/usr/bin/env bash
 
-function install_requirements
-{
-    REQS=${PWD}/testpack/requirements.txt
-    if [ -f ${REQS} ]; then
-        pip3 install -r ${REQS}
-    fi
-}
-
-install_requirements
-
-[ ! -z ${SCREENSHOTS} ] && mkdir -p ${SCREENSHOTS}
-
 run-parts --exit-on-error --regex "(^[a-zA-Z0-9_.]+)" ${PWD}/testpack/scripts/
 exitval=$?
 

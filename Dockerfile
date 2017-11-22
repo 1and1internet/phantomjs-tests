@@ -16,7 +16,8 @@ RUN apt-get update \
 	&& apt-get clean \
 	&& rm -rf /var/lib/apt/lists/* \
 	&& chmod -R 777 /usr/local \
-	&& chmod +x /usr/local/bin/test_runner
+	&& chmod +x /usr/local/bin/test_runner \
+	&& chmod -R 755 /hooks
 
 ENV PATH=${PATH}:/${PHANTOMJS}/bin \
     TESTS_DIR=/tmp/tests

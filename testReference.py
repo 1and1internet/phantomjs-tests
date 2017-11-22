@@ -34,6 +34,7 @@ class TestReference(unittest.TestCase):
 
     def test_ReferenceTest(self):
         # Run tests using typical selenium client commands
+        pass
 
     # </tests to run>
 
