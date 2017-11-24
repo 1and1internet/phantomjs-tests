@@ -14,7 +14,7 @@ RUN apt-get update \
     && cd /${PHANTOMJS} \
     && update-alternatives --install /usr/bin/supervisord supervisord /usr/bin/supervisorgo 1 \
 	&& chmod -R 777 /usr/local \
-	&& chmod +x /usr/local/bin/test_runner \
+	&& chmod +x /usr/local/bin/* \
 	&& chmod -R 755 /hooks \
 	&& cd /root \
 	&& apt-get update -q \
@@ -24,8 +24,10 @@ RUN apt-get update \
             curl \
             gnupg2 \
             software-properties-common \
-    && curl -fsSL https://download.docker.com/linux/$(. /etc/os-release; echo "$ID")/gpg | \
-            apt-key add - \
+    && curl -fsSL https://download.docker.com/linux/$(. /etc/os-release; echo "$ID")/gpg --output docker-gpg-key \
+    && sha1sum -c sha1sums.txt \
+    && verify_gpg_key_fingerprint /root/docker-gpg-key '9DC8 5822 9FC7 DD38 854A  E2D8 8D81 803C 0EBF CD88' \
+    && apt-key add /root/docker-gpg-key \
     && add-apt-repository \
             "deb [arch=amd64] https://download.docker.com/linux/$(. /etc/os-release; echo "$ID") \
             $(lsb_release -cs) \
