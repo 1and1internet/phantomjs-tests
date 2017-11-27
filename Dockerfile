@@ -35,7 +35,8 @@ RUN apt-get update \
     && apt-get update -q \
     && apt-get install docker-ce \
     && apt-get clean -q -y \
-    && rm -rf /var/lib/apt/lists/*
+    && rm -rf /var/lib/apt/lists/* \     
+    && rm /hooks/entrypoint-pre.d/00_check_euid
 
 ENV PATH=${PATH}:/${PHANTOMJS}/bin \
     TESTS_DIR=/tmp/tests
