@@ -3,8 +3,8 @@
 REQS=${CI_WORKSPACE}/testpack/requirements.txt
 if [ -f ${REQS} ]; then
     echo "  Attempting to install python modules"
-    pip3 install --upgrade pip
-    pip3 install -r ${REQS}
+    pip3 install -q --upgrade pip
+    pip3 install -qr ${REQS}
 else
     echo "  No python modules to install"
 fi
