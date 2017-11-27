@@ -13,12 +13,12 @@ RUN apt-get update \
     && curl -L https://bitbucket.org/ariya/phantomjs/downloads/${PHANTOMJS}.tar.bz2 | tar jxvf - \
     && cd /${PHANTOMJS} \
     && update-alternatives --install /usr/bin/supervisord supervisord /usr/bin/supervisorgo 1 \
-	&& chmod -R 777 /usr/local \
-	&& chmod +x /usr/local/bin/* \
-	&& chmod -R 755 /hooks \
-	&& cd /root \
-	&& apt-get update -q \
-	&& apt-get install -y \
+    && chmod -R 777 /usr/local \
+    && chmod +x /usr/local/bin/* \
+    && chmod -R 755 /hooks \
+    && cd /root \
+    && apt-get update -q \
+    && apt-get install -y \
             apt-transport-https \
             ca-certificates \
             curl \
@@ -32,10 +32,10 @@ RUN apt-get update \
             "deb [arch=amd64] https://download.docker.com/linux/$(. /etc/os-release; echo "$ID") \
             $(lsb_release -cs) \
             stable"  \
-	&& apt-get update -q \
-	&& apt-get install docker-ce \
-	&& apt-get clean -q -y \
-	&& rm -rf /var/lib/apt/lists/*
+    && apt-get update -q \
+    && apt-get install docker-ce \
+    && apt-get clean -q -y \
+    && rm -rf /var/lib/apt/lists/*
 
 ENV PATH=${PATH}:/${PHANTOMJS}/bin \
     TESTS_DIR=/tmp/tests
