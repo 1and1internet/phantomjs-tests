@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-REQS=${PWD}/testpack/requirements.txt
+REQS=${CI_WORKSPACE}/testpack/requirements.txt
 if [ -f ${REQS} ]; then
     echo "  Attempting to install python modules"
     pip3 install --upgrade pip

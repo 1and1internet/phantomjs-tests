@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 
-run-parts --exit-on-error --regex "(^[a-zA-Z0-9_.\-]+)" ${PWD}/testpack/scripts/
+run-parts --exit-on-error --regex "(^[a-zA-Z0-9_.\-]+)" ${CI_WORKSPACE}/testpack/scripts/
 exitval=$?
 
 # kill supervisord after we exit, giving supervisord time to catch our exit
-(sleep 1 && kill 1)&
+(sleep 1 && kill $(ps -ef | grep supervisord | egrep -v grep | head -1 | awk '{ print $2 }'))&
 
 echo "Test runner exiting with $exitval"
 exit $exitval
