@@ -39,7 +39,6 @@ RUN apt-get update \
     && rm /hooks/entrypoint-pre.d/00_check_euid
 
 ENV PATH=${PATH}:/${PHANTOMJS}/bin \
-    TESTS_DIR=/tmp/tests \
     CI_WORKSPACE=/mnt
 
 WORKDIR /mnt
