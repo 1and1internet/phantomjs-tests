@@ -1,4 +1,4 @@
-FROM 1and1internet/debian-8:latest
+FROM 1and1internet/debian-9:latest
 
 ARG PHANTOMJS=phantomjs-2.1.1-linux-x86_64
 
@@ -26,8 +26,8 @@ RUN apt-get update \
             software-properties-common \
     && curl -fsSL https://download.docker.com/linux/$(. /etc/os-release; echo "$ID")/gpg --output docker-gpg-key \
     && sha1sum -c sha1sums.txt \
-    && verify_gpg_key_fingerprint /root/docker-gpg-key '9DC8 5822 9FC7 DD38 854A  E2D8 8D81 803C 0EBF CD88' \
-    && apt-key add /root/docker-gpg-key \
+    && apt-key add docker-gpg-key \
+    && apt-key fingerprint 0EBFCD88 | grep "9DC8 5822 9FC7 DD38 854A  E2D8 8D81 803C 0EBF CD88" \
     && add-apt-repository \
             "deb [arch=amd64] https://download.docker.com/linux/$(. /etc/os-release; echo "$ID") \
             $(lsb_release -cs) \
@@ -35,7 +35,7 @@ RUN apt-get update \
     && apt-get update -q \
     && apt-get install docker-ce \
     && apt-get clean -q -y \
-    && rm -rf /var/lib/apt/lists/* \     
+    && rm -rf /var/lib/apt/lists/* \
     && rm /hooks/entrypoint-pre.d/00_check_euid
 
 ENV PATH=${PATH}:/${PHANTOMJS}/bin \
