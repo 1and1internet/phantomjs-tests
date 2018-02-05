@@ -1,9 +1,14 @@
 #!/usr/bin/env bash
 
+pip3 install  -q --upgrade pip
+
+echo "Installing testpack_helper_library"
+cd /root/testpack_helper_library_module
+pip3 install .
+
 REQS=${CI_WORKSPACE}/testpack/requirements.txt
 if [ -f ${REQS} ]; then
     echo "  Attempting to install python modules"
-    pip3 install -q --upgrade pip
     pip3 install -qr ${REQS}
 else
     echo "  No python modules to install"
