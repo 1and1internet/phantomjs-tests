@@ -3,6 +3,7 @@ import os
 import docker
 import tarfile
 from io import BytesIO
+import time
 
 
 class Test1and1Common(unittest.TestCase):
@@ -12,7 +13,7 @@ class Test1and1Common(unittest.TestCase):
     container_ip = None
 
     @classmethod
-    def setUpClass(cls, network_mode="bridge", user=10000, working_dir="/var/www", ports={8080:8080}, environment={}):
+    def setUpClass(cls, container_wait=3, network_mode="bridge", user=10000, working_dir="/var/www", ports={8080:8080}, environment={}):
         image_to_test = os.getenv("IMAGE_NAME")
         if image_to_test == "":
             raise Exception("I don't know what image to test")
@@ -30,6 +31,7 @@ class Test1and1Common(unittest.TestCase):
         details = docker.APIClient().inspect_container(container=Test1and1Common.container.id)
         Test1and1Common.container_ip = details['NetworkSettings']['IPAddress']
         Test1and1Common.container_details = details
+        time.sleep(container_wait) # Try not to start testing before the container is ready
 
     @classmethod
     def tearDownClass(cls):
