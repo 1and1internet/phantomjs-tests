@@ -9,6 +9,7 @@ class Test1and1Common(unittest.TestCase):
     docker_client = None
     container = None
     container_details = None
+    container_ip = None
 
     @classmethod
     def setUpClass(cls, network_mode="bridge", user=10000, working_dir="/var/www", ports={8080:8080}, environment={}):
