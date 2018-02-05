@@ -1,6 +1,8 @@
 import unittest
 import os
 import docker
+import tarfile
+from io import BytesIO
 
 
 class Test1and1Common(unittest.TestCase):
@@ -22,6 +24,24 @@ class Test1and1Common(unittest.TestCase):
     @classmethod
     def tearDownClass(cls):
         Test1and1Common.container.stop()
+
+    @classmethod
+    def copy_test_files(cls, startfolder, relative_source, dest):
+        # Change to the start folder
+        pwd = os.getcwd()
+        os.chdir(startfolder)
+        # Tar up the request folder
+        pw_tarstream = BytesIO()
+        with tarfile.open(fileobj=pw_tarstream, mode='w:gz') as tf:
+            tf.add(relative_source)
+        # Copy the archive to the correct destination
+        docker.APIClient().put_archive(
+            container=Test1and1Common.container.id,
+            path=dest,
+            data=pw_tarstream.getvalue()
+        )
+        # Change back to original folder
+        os.chdir(pwd)
 
     def setUp(self):
         print ("\nIn method", self._testMethodName)
