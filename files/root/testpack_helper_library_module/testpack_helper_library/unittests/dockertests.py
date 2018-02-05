@@ -8,9 +8,10 @@ from io import BytesIO
 class Test1and1Common(unittest.TestCase):
     docker_client = None
     container = None
+    container_details = None
 
     @classmethod
-    def setUpClass(cls):
+    def setUpClass(cls, network_mode="bridge", user=10000, working_dir="/var/www", ports={8080:8080}, environment={}):
         image_to_test = os.getenv("IMAGE_NAME")
         if image_to_test == "":
             raise Exception("I don't know what image to test")
@@ -18,8 +19,16 @@ class Test1and1Common(unittest.TestCase):
         Test1and1Common.container = Test1and1Common.docker_client.containers.run(
             image=image_to_test,
             remove=True,
-            detach=True
+            detach=True,
+            network_mode=network_mode,
+            user=user,
+            ports=ports,
+            working_dir="/var/www",
+            environment=environment
         )
+        details = docker.APIClient().inspect_container(container=Test1and1Common.container.id)
+        Test1and1Common.container_ip = details['NetworkSettings']['IPAddress']
+        Test1and1Common.container_details = details
 
     @classmethod
     def tearDownClass(cls):
