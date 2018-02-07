@@ -11,9 +11,9 @@ ${PIP} install  -q --upgrade pip
 REQS=${CI_WORKSPACE}/testpack/requirements.txt
 if [ -f ${REQS} ]; then
     if [ $(grep -q "testpack_helper_library" ${REQS}; echo $?) -eq 0 ]; then
-        echo "Installing testpack_helper_library"
+        echo "  Installing testpack_helper_library"
         cd /root/testpack_helper_library_module
-        ${PIP} install .
+        ${PIP} install -q .
         cd -
     fi
 
