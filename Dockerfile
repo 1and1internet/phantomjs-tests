@@ -8,7 +8,7 @@ ARG PHANTOMJS=phantomjs-2.1.1-linux-x86_64
 
 COPY files /
 RUN apt-get update \
-    && apt-get install -y curl tar bzip2 python3 python3-pip libfontconfig1 \
+    && apt-get install -y curl tar bzip2 python3 python3-pip libfontconfig1 sudo \
     && cd / \
     && curl -L https://bitbucket.org/ariya/phantomjs/downloads/${PHANTOMJS}.tar.bz2 | tar jxvf - \
     && cd /${PHANTOMJS} \
