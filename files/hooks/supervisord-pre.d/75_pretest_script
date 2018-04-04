@@ -1,5 +1,0 @@
-#!/usr/bin/env bash
-
-if [ -f ${CI_WORKSPACE}/testpack/pretest.sh ]; then
-    bash ${CI_WORKSPACE}/testpack/pretest.sh
-fi

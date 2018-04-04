@@ -24,6 +24,7 @@ RUN apt-get update \
             curl \
             gnupg2 \
             software-properties-common \
+            libpq-dev \
     && curl -fsSL https://download.docker.com/linux/$(. /etc/os-release; echo "$ID")/gpg --output docker-gpg-key \
     && sha1sum -c sha1sums.txt \
     && apt-key add docker-gpg-key \
