@@ -4,6 +4,7 @@ import os
 import json
 import base64
 from collections import namedtuple
+from testpack_helper_library.unittests.chrome_driver import ChromeDriver
 
 
 HAVE_SERVICE_INFO = True
@@ -21,6 +22,7 @@ class TestTemplate1and1Common(unittest.TestCase):
         self._driver = None
         self._screenshot_folder = os.getenv("SCREENSHOTS")
         self.loadTemplateEndpoints()
+        self._chrome_driver = ChromeDriver()
 
     def tearDown(self):
         if self._driver is not None:
@@ -52,3 +54,6 @@ class TestTemplate1and1Common(unittest.TestCase):
         basic_auth_creds = self.basicAuthCredentials(username, password)
         webdriver.DesiredCapabilities.PHANTOMJS['phantomjs.page.customHeaders.Authorization'] = "Basic '%s'" % basic_auth_creds
         return self.getDriver()
+
+    def getChromeDriver(self):
+        return self._chrome_driver.getChromeDriver()
