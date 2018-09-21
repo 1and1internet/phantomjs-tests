@@ -60,6 +60,7 @@ class Test1and1Common(unittest.TestCase):
         self.container = Test1and1Common.container
         self._output = None
         self._exit_code = None
+        self._chrome_driver = None
 
     def execRun(self, command):
         result = self.container.exec_run(command)
