@@ -56,4 +56,4 @@ class TestTemplate1and1Common(unittest.TestCase):
         return self.getDriver()
 
     def getChromeDriver(self):
-        return self._chrome_driver.getChromeDriver()
+        return self._chrome_driver.getChromeDriver(no_sandbox=True)
