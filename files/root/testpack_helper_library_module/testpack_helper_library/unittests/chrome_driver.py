@@ -14,5 +14,5 @@ class ChromeDriver:
 
             if getpass.getuser() == 'root' or no_sandbox:
                 chrome_options.add_argument("--no-sandbox")
-            self._chrome_driver = webdriver.Chrome(chrome_options=chrome_options)
+            self._chrome_driver = webdriver.Chrome(options=chrome_options)
         return self._chrome_driver
