@@ -13,6 +13,7 @@ class DockerTest1and1Common(unittest.TestCase):
     container_ip = None
     platform = "docker"
     endpoint = None
+    chrome_driver = None
 
     @classmethod
     def setUpClass(cls, container_wait=3, network_mode="bridge", user=10000, working_dir="/var/www", ports={8080:8080}, environment={}):
@@ -41,6 +42,7 @@ class DockerTest1and1Common(unittest.TestCase):
     @classmethod
     def tearDownClass(cls):
         DockerTest1and1Common.container.stop()
+        DockerTest1and1Common.chrome_driver.close()
 
     @classmethod
     def copy_test_files(cls, startfolder, relative_source, dest):
@@ -65,7 +67,6 @@ class DockerTest1and1Common(unittest.TestCase):
         self.container = DockerTest1and1Common.container
         self._output = None
         self._exit_code = None
-        self._chrome_driver = None
 
     def execRun(self, command):
         result = self.container.exec_run(command)
@@ -87,7 +88,7 @@ class DockerTest1and1Common(unittest.TestCase):
         )
 
     def getChromeDriver(self):
-        if self._chrome_driver is None:
+        if DockerTest1and1Common.chrome_driver is None:
             from testpack_helper_library.unittests.chrome_driver import ChromeDriver
-            self._chrome_driver = ChromeDriver()
-        return self._chrome_driver.getChromeDriver()
+            DockerTest1and1Common.chrome_driver = ChromeDriver()
+        return DockerTest1and1Common.chrome_driver.getChromeDriver()
