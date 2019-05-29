@@ -42,7 +42,8 @@ class DockerTest1and1Common(unittest.TestCase):
     @classmethod
     def tearDownClass(cls):
         DockerTest1and1Common.container.stop()
-        DockerTest1and1Common.chrome_driver.close()
+        if DockerTest1and1Common.chrome_driver != None:
+            DockerTest1and1Common.chrome_driver.close()
 
     @classmethod
     def copy_test_files(cls, startfolder, relative_source, dest):
