@@ -63,7 +63,7 @@ class KubeTest1and1Common(unittest.TestCase):
 
     @classmethod
     def set_pod_name(cls, image_name):
-        KubeTest1and1Common.pod_name = "tpf-" + image_name.split('/')[-1] + "-" + str(random.randint(1,999999)).rjust(6,"0")
+        KubeTest1and1Common.pod_name = "tpf-" + image_name.split('/')[-1].replace('.', '') + "-" + str(random.randint(1,999999)).rjust(6,"0")
 
     @classmethod
     def get_pod_manifest(cls, image, ports, envars):
