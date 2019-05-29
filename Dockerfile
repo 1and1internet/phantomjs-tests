@@ -37,7 +37,7 @@ COPY files /
 RUN chmod +x /usr/local/bin/* \
     && cd /root \
     && sha1sum -c sha1sums.txt \
-    && pip3 install -q --upgrade pip kubernetes==8.0.1 openshift==0.8.8 urllib3==1.23 selenium \
+    && pip3 install -q --upgrade pip kubernetes selenium \
     && cd /root/testpack_helper_library_module \
     && pip3 install -q .
 

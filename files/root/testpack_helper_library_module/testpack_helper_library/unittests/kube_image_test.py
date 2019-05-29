@@ -7,7 +7,6 @@ import random
 from kubernetes import client, config
 from kubernetes.client.rest import ApiException
 from kubernetes.stream import stream
-from openshift.dynamic import DynamicClient
 import requests
 
 
@@ -142,20 +141,17 @@ class KubeTest1and1Common(unittest.TestCase):
 
     @classmethod
     def create_route(cls, ports):
-        k8s_client = config.new_client_from_config()
-        dyn_client = DynamicClient(k8s_client)
+        headers, cluster_url = KubeTest1and1Common.get_kube_config_for_requests()
 
-        v1_routes = dyn_client.resources.get(api_version='route.openshift.io/v1', kind='Route')
         hostname = KubeTest1and1Common.pod_name + KubeTest1and1Common.route_url
         KubeTest1and1Common.endpoint = "http://" + hostname
 
+        portname="default-port"
         for port in ports.keys():
-            break
-
-        portname = str(port) + '-tcp'
+            portname = str(port) + '-tcp'
 
         route = {
-            "apiVersion": "route.openshift.io/v1",
+            "apiVersion": "v1",
             "kind": "Route",
             "metadata": {
                 "labels": { "pod_name": KubeTest1and1Common.pod_name },
@@ -174,7 +170,14 @@ class KubeTest1and1Common(unittest.TestCase):
             }
         }
 
-        v1_routes.create(namespace=KubeTest1and1Common.namespace, body=route)
+        response = requests.post(
+            url=cluster_url + "/oapi/v1/namespaces/%s/routes" % (KubeTest1and1Common.namespace),
+            headers=headers,
+            json=route
+        )
+
+        if response.status_code > 299:
+            raise Exception("create_route: %d : %s" % (response.status_code, response.text))
 
     @classmethod
     def wait_for_route(cls):
@@ -186,6 +189,19 @@ class KubeTest1and1Common(unittest.TestCase):
             retries -= 1
         if retries <= 0:
             raise Exception("Gave up waiting for route")
+
+    @classmethod
+    def get_kube_config_for_requests(cls):
+        config_file = os.path.expanduser(os.environ.get('KUBECONFIG', '~/.kube/config'))
+        kube_config = config.kube_config._get_kube_config_loader_for_yaml_file(config_file)
+        token = kube_config._user.value['token']
+        cluster_url = kube_config._cluster['server']
+        headers = {
+            "Authorization": "Bearer " + token,
+            "Accept": "application/json",
+            "Content": "application/json"
+        }
+        return (headers, cluster_url)
 
     @classmethod
     def tearDownClass(cls):
@@ -223,10 +239,14 @@ class KubeTest1and1Common(unittest.TestCase):
     @classmethod
     def cleanup_route(cls):
         if KubeTest1and1Common.route_url:
-            k8s_client = config.new_client_from_config()
-            dyn_client = DynamicClient(k8s_client)
-            routes = dyn_client.resources.get(api_version='v1', kind='Route')
-            routes.delete(name=KubeTest1and1Common.pod_name, namespace=KubeTest1and1Common.namespace)
+            headers, cluster_url = KubeTest1and1Common.get_kube_config_for_requests()
+            route_url = cluster_url + "/oapi/v1/namespaces/%s/routes/%s"
+            response = requests.delete(
+                url=route_url % (KubeTest1and1Common.namespace, KubeTest1and1Common.pod_name),
+                headers=headers
+            )
+            if response.status_code > 299:
+                raise Exception("cleanup_route: %d : %s" % (response.status_code, response.text))
 
     @classmethod
     def copy_test_files(cls, startfolder, relative_source, dest):
