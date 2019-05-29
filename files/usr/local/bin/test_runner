@@ -6,7 +6,7 @@ if [ ! -z $PROXY ]; then
     export HTTPS_PROXY=$PROXY
 fi
 
-ls -l /mnt | grep -q "total 0" && {
+[ $(ls -l /mnt | wc -l) -eq 1 ] &&  {
     if [ ! -z $IMAGE_NAME -a ! -z $GIT_REPO ]; then
         GIT_URL=${GIT_REPO}/${IMAGE_NAME}
         echo "Installing from git url $GIT_URL"
