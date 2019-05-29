@@ -209,7 +209,8 @@ class KubeTest1and1Common(unittest.TestCase):
         KubeTest1and1Common.cleanup_pod()
         KubeTest1and1Common.cleanup_service()
         KubeTest1and1Common.cleanup_route()
-        KubeTest1and1Common.chrome_driver.close()
+        if KubeTest1and1Common.chrome_driver != None:
+            KubeTest1and1Common.chrome_driver.close()
 
     @classmethod
     def cleanup_pod(cls):
