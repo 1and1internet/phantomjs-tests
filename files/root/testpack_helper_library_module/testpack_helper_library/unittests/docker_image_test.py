@@ -76,6 +76,9 @@ class DockerTest1and1Common(unittest.TestCase):
             self._output = result.decode('utf-8')
         return self._output
 
+    def exec(self, command):
+        return self.execRun(command=command)
+
     def assertPackageIsInstalled(self, packageName):
         op = self.execRun("dpkg -l %s" % packageName)
         self.assertTrue(

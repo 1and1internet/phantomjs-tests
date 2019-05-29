@@ -306,13 +306,17 @@ class KubeTest1and1Common(unittest.TestCase):
         return self.execRun(command=command)
 
     def execRun(self, command):
+        result =  self.exec(command=command)
+        return result + '\n'
+
+    def exec(self, command):
         # This is not interactive, it just runs a command and passes back the result
         # See https://github.com/kubernetes-client/python/blob/master/examples/exec.py - for exec examples
         if not isinstance(command, list):
             command = ["/bin/bash", "-c", command]
 
         api = client.CoreV1Api()
-        result = stream(
+        return stream(
             api.connect_get_namespaced_pod_exec,
             name=KubeTest1and1Common.pod_name,
             namespace=KubeTest1and1Common.namespace,
@@ -322,7 +326,6 @@ class KubeTest1and1Common(unittest.TestCase):
             stdin=False,
             tty=False
         )
-        return result + '\n'
 
     def logs(self):
         # Annoyingly, all our tests currently expect binary results from this, but want a string
