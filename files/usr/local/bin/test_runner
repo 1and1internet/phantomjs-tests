@@ -7,7 +7,7 @@ if [ ! -z $PROXY ]; then
 fi
 
 [ $(ls -l /mnt | wc -l) -eq 1 ] &&  {
-    if [ ! -z $IMAGE_NAME -a ! -z $GIT_REPO ]; then
+    if [ ! -z $IMAGE_NAME ] && [ ! -z $GIT_REPO ]; then
         GIT_URL=${GIT_REPO}/${IMAGE_NAME}
         echo "Installing from git url $GIT_URL"
         git clone $GIT_URL .
