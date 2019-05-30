@@ -93,3 +93,6 @@ class DockerTest1and1Common(unittest.TestCase):
             from testpack_helper_library.unittests.chrome_driver import ChromeDriver
             DockerTest1and1Common.chrome_driver = ChromeDriver()
         return DockerTest1and1Common.chrome_driver.getChromeDriver()
+
+    def logs(self):
+        return self.container.logs().decode('utf-8')
