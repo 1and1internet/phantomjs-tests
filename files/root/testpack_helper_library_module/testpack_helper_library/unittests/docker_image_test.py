@@ -69,7 +69,7 @@ class DockerTest1and1Common(unittest.TestCase):
         self._output = None
         self._exit_code = None
 
-    def execRun(self, command):
+    def exec(self, command):
         result = self.container.exec_run(command)
         if isinstance(result, tuple):
             self._exit_code = result[0]
@@ -78,11 +78,8 @@ class DockerTest1and1Common(unittest.TestCase):
             self._output = result.decode('utf-8')
         return self._output
 
-    def exec(self, command):
-        return self.execRun(command=command)
-
     def assertPackageIsInstalled(self, packageName):
-        op = self.execRun("dpkg -l %s" % packageName)
+        op = self.exec("dpkg -l %s" % packageName)
         self.assertTrue(
             op.find(packageName) > -1,
             msg="%s package not installed" % packageName

@@ -311,15 +311,6 @@ class KubeTest1and1Common(unittest.TestCase):
         self._output = None
         self._exit_code = None
 
-    def exec_run(self, command):
-        # A lot of image tests expect to be able to call self.container.exec_run, which would
-        # have been a direct use of the docker api before, but we are not in docker land anymore.
-        return self.execRun(command=command)
-
-    def execRun(self, command):
-        result =  self.exec(command=command)
-        return result + '\n'
-
     def exec(self, command):
         # This is not interactive, it just runs a command and passes back the result
         # See https://github.com/kubernetes-client/python/blob/master/examples/exec.py - for exec examples
