@@ -339,11 +339,6 @@ class KubeTest1and1Common(unittest.TestCase):
         )
 
     def logs(self):
-        # Annoyingly, all our tests currently expect binary results from this, but want a string
-        # We have a string, but need to encode it.
-        return self.logstr().encode('utf-8')
-
-    def logstr(self):
         api = client.CoreV1Api()
         return api.read_namespaced_pod_log(name=KubeTest1and1Common.pod_name, namespace=KubeTest1and1Common.namespace)
 
