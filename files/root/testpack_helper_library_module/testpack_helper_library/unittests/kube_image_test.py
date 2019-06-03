@@ -334,7 +334,7 @@ class KubeTest1and1Common(unittest.TestCase):
         return api.read_namespaced_pod_log(name=KubeTest1and1Common.pod_name, namespace=KubeTest1and1Common.namespace)
 
     def assertPackageIsInstalled(self, packageName):
-        op = self.execRun("dpkg -l %s" % packageName)
+        op = self.exec("dpkg -l %s" % packageName)
         self.assertTrue(
             op.find(packageName) > -1,
             msg="%s package not installed" % packageName
