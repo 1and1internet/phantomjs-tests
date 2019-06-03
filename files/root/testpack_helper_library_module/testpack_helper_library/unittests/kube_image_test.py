@@ -191,7 +191,7 @@ class KubeTest1and1Common(unittest.TestCase):
 
     @classmethod
     def wait_for_route(cls):
-        retries = 90
+        retries = 30
         result = requests.get(KubeTest1and1Common.endpoint)
         while result.status_code != 200 and retries > 0:
             time.sleep(2)
