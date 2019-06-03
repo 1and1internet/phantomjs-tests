@@ -198,6 +198,7 @@ class KubeTest1and1Common(unittest.TestCase):
             result = requests.get(KubeTest1and1Common.endpoint)
             retries -= 1
         if retries <= 0:
+            KubeTest1and1Common.tearDownClass()
             raise Exception("Gave up waiting for route")
 
     @classmethod
