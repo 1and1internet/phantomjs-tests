@@ -181,7 +181,7 @@ class KubeTest1and1Common(unittest.TestCase):
         }
 
         response = requests.post(
-            url=cluster_url + "/oapi/v1/namespaces/%s/routes" % (KubeTest1and1Common.namespace),
+            url=cluster_url + "/apis/route.openshift.io/v1/namespaces/%s/routes" % (KubeTest1and1Common.namespace),
             headers=headers,
             json=route
         )
@@ -252,7 +252,7 @@ class KubeTest1and1Common(unittest.TestCase):
     def cleanup_route(cls):
         if KubeTest1and1Common.route_url:
             headers, cluster_url = KubeTest1and1Common.get_kube_config_for_requests()
-            route_url = cluster_url + "/oapi/v1/namespaces/%s/routes/%s"
+            route_url = cluster_url + "/apis/route.openshift.io/v1/namespaces/%s/routes/%s"
             response = requests.delete(
                 url=route_url % (KubeTest1and1Common.namespace, KubeTest1and1Common.pod_name),
                 headers=headers
